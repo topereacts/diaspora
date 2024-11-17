@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Errandee Dashboard
+{% endblock %}
+
+{% block main %}
+
+    {% if notifications %}
+    <div class="alert alert-info">
+        {% for notification in notifications %}
+            <p>{{ notification.message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+<h1>Welcome, {{ username }}</h1>
+<h4>Avalaible Errands:</h4>
+
+{% if errands %}
+    {% for errand in errands %}
+    <div class="card mb-3" style="width: 100%;">
+        <div class="row g-0">
+            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                <img src="{{ url_for('static', filename=errand['profile_picture']) }}" class="img-fluid rounded-circle" alt="Profile Picture"
+                style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">Errander: {{ errand['fullname'] }} ({{ errand['country'] }})</h5>
+                    <p class="card-text">Description: {{ errand['description'] }}</p>
+                    <p class="card-text">Location: {{ errand['location'] }}</p>
+                    <p class="card-text">Status: {{ errand['status'] }}</p>
+                    
+                    {% if errand.is_requested %}
+                        <a href="#" class="btn btn-danger" disabled>Requested Errand</a>
+                    {% else %}
+                        <a href="/express_interest/{{ errand['id'] }}" class="btn btn-success">Available for Errand</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No open errands available.</p>
+{% endif %}
+
+
+{% endblock %}

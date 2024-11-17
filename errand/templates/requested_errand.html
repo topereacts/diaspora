@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}Requested Errands{% endblock %}
+
+{% block main %}
+<h1>Requested Errands</h1>
+
+{% if requested_errands %}
+    {% for errand in requested_errands %}
+    <div class="card mb-3" style="width: 100%;">
+        <div class="row g-0">
+            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                <img src="{{ url_for('static', filename=errand['profile_picture']) }}" class="img-fluid rounded-circle" alt="Profile Picture"
+                style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">Errander: {{ errand['fullname'] }} ({{ errand['country'] }})</h5>
+                    <p class="card-text">Description: {{ errand['description'] }}</p>
+                    <p class="card-text">Location: {{ errand['location'] }}</p>
+                    <p class="card-text">Status: {{ errand['status'] }}</p>
+                    <p class="card-text">
+                        {% if errand['interest_status'] == 'accepted' %}
+                            <span class="badge bg-success">Accepted</span>
+                        {% elif errand['interest_status'] == 'not accepted' %}
+                            <span class="badge bg-danger">Not Accepted</span>
+                        {% else %}
+                            <span class="badge bg-warning">Pending</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No requested errands found.</p>
+{% endif %}
+
+{% endblock %}
+

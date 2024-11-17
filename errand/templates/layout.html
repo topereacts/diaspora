@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" 
+          content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link href="/static/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/country-select@2.0.0/dist/css/country-select.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lato&display=swap" rel="stylesheet">
+    <title>DIASPORA: {% block title %}{% endblock %}</title>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid" id="navbar">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    DIASPORA
+                </a>
+            </div>
+            {% if session.get("user_id") %}
+                <ul class="nav navbar-nav navbar-right">
+                    
+                    {% if session["role"] == "errander" %}
+                        <li><a href="/errander_dashboard"><i class="bi bi-house"></i></a></li>
+                        <li><a href="/create_errand">Send Errand</a></li>
+                        <li>
+                            <a href="/notification" class="position-relative">
+                                <i class="bi bi-bell"></i>
+                                {% if interested_count > 0 %}
+                                    <span class="badge bg-danger">{{ interested_count }}</span>
+                                {% else %}
+                                    <span class="badge bg-danger">0</span>
+                                {% endif %}
+                            </a>
+                        </li>                        
+                    {% elif session["role"] == "errandee" %}
+                        <li><a href="/errandee_dashboard"><i class="bi bi-house"></i></a></li>
+                        <li><a href="/requested_errands">Requested Errands</a></li>
+                    {% endif %}
+                    <li><a href="/logout">
+                        <span class="glyphicon glyphicon-log-out"></span> Logout
+                    </a></li>
+                </ul>
+            {% else %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="/register">
+                            <span class="glyphicon glyphicon-user"></span> Register
+                        </a>
+                    </li>
+                    <li><a href="/login">
+                        <span class="glyphicon glyphicon-log-in"></span> Login
+                    </a></li>
+                </ul>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <header>
+            <div class="alert alert-info">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        </header>
+        {% endif %}
+    {% endwith %}
+
+    <main class="container py-5 text-center">
+        {% block main %}{% endblock %}
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/country-select@2.0.0/dist/js/country-select.min.js"></script>
+
+</body>
+
+</html>

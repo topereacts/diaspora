@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Errand not done
+{% endblock %}
+
+{% block main %}
+
+<h4>Reason for Errand Not Done:</h4>
+<form action="{{ url_for('errand_not_done', errand_id=errand_id, errandee_id=errandee_id) }}" method="POST">
+    <div class="mb-3">
+        <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Errander
+{% endblock %}
+
+{% block main %}
+
+
+<h3>WELCOME BACK {{ username }}</h3>
+<h4>Current Errand:</h4>
+
+{% if open_errands %}
+    {% for errand in open_errands %}
+    <div class="card mb-3 mx-auto" style="width: 100%; max-height: 300px;">
+        <div class="row g-0">
+            <!-- Profile Picture Section -->
+            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                <img src="{{ url_for('static', filename=profile_picture) }}" class="img-fluid rounded-circle" 
+                     alt="Profile Picture" 
+                     style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;"> <!-- Fixed width and height -->
+            </div>
+            
+            <!-- Errand Details Section -->
+            <div class="col-md-8">
+                <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                    <!-- Errand Location and Description -->
+                    <h5 class="card-title">Errand Location: {{ errand['location'] }}</h5>
+                    <p class="card-text">{{ errand['description'] }}</p>
+                    
+                    <!-- Errand Status below the profile picture -->
+                    <p class="card-text">Status: 
+                        {% if errand['status'] == 'open' %}
+                            <span class="badge bg-success">Open</span>
+                        {% elif errand['status'] == 'completed' %}
+                            <span class="badge bg-secondary">Completed</span>
+                        {% endif %}
+                    </p>
+
+                    <!-- Buttons to edit, delete, and mark as completed below the description -->
+                    <div class="d-flex justify-content-start">
+                        <a href="/edit_errand/{{ errand['id'] }}" class="btn btn-warning btn-sm me-2">Edit</a>
+                        <a href="/delete_errand/{{ errand['id'] }}" class="btn btn-danger btn-sm me-2">Delete</a>
+                        {% if errand['status'] == 'open' %}
+                            <a href="/complete_errand/{{ errand['id'] }}" class="btn btn-success btn-sm">Mark as Completed</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No errands available.</p>
+{% endif %}
+
+<h4>Errand History:</h4>
+{% if completed_errands %}
+    {% for errand in completed_errands %}
+    <div class="card mb-3" style="width: 100%;">
+        <div class="row g-0">
+            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                <img src="{{ url_for('static', filename=profile_picture) }}" class="img-fluid rounded-circle" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">Errander: {{ errand['fullname'] }} ({{ errand['country'] }})</h5>
+                    <p class="card-text">Description: {{ errand['description'] }}</p>
+                    <p class="card-text">Location: {{ errand['location'] }}</p>
+                    <p class="card-text">Status: Completed</p>
+                    <p class="card-text"><small class="text-muted">Completed on {{ errand.completion_date }}</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No completed errands yet.</p>
+{% endif %}
+
+<!-- Pagination Controls -->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        {% if page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('errander_dashboard', page=page - 1) }}">Previous</a>
+            </li>
+        {% endif %}
+
+        {% for p in range(1, total_pages + 1) %}
+            <li class="page-item {% if p == page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('errander_dashboard', page=p) }}">{{ p }}</a>
+            </li>
+        {% endfor %}
+
+        {% if page < total_pages %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('errander_dashboard', page=page + 1) }}">Next</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Send Errand
+{% endblock %}
+
+{% block main %}
+<h2>Create Errand</h2>
+
+<form action="/create_errand" method="POST">
+    <div class="form-group">
+        <label for="description">Errand Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="location">Errand Location</label>
+        <input type="text" class="form-control" id="location" name="location" placeholder="City, State" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Errand</button>
+</form>
+
+{% endblock %}

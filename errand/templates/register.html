@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block main %}
+<h2>Register</h2>
+<div class="register-container">
+    <form action="/register" method="post" enctype="multipart/form-data" onsubmit="return validatePassword()">
+        <input type="text" name="fullname" placeholder="Fullname" required>
+        <input type="text" name="username" placeholder="Username" required>
+        <div class="radio-group">
+            <input type="radio" id="male" name="gender" value="male">
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female">Female</label>
+        </div>
+        <select id="country" name="country" class="country-select" required>
+            <option value="" disabled selected>Country of Residence</option>
+            <option value="USA">USA</option>
+            <option value="Nigeria">Nigeria</option>
+            <!-- Add more options as needed -->
+        </select>
+        <input type="text" name="address" placeholder="House Address" required>
+        <input type="tel" id="phone" name="phonenumber" placeholder="PhoneNumber: +234 8012345678" required>
+        <input type="tel" id="phone" name="whatsappnumber" placeholder="WhatsappNumber: +234 8012345678" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+        <select id="role" name="role" required>
+            <option value="" disabled selected>Register AS</option>
+            <option value="errander">Errander</option>
+            <option value="errandee">Errandee</option>
+        </select>
+        <label for="profile_picture">Upload a selfie:</label>
+        <input type="file" id="profile_picture" name="profile_picture" accept="image/*" required>
+        <button type="submit">Register</button>
+    </form>
+</div>
+            <script>
+                function validatePassword() {
+                var password = document.getElementById("password").value;
+                var confirmPassword = document.getElementById("confirm_password").value;
+                if (password !== confirmPassword) {
+                    alert("Passwords do not match");
+                    return false;
+                }
+                return true;
+            }
+            </script>
+
+{% endblock %}

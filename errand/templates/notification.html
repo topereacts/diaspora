@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block main %}
+<h1>Notifications</h1>
+
+{% if interested_count > 0 %}
+    <p>You have {{ interested_count }} interested errandees!</p>
+{% else %}
+    <p>No new notifications.</p>
+{% endif %}
+
+{% if errandees %}
+    {% for errandee in errandees %}
+    <div class="card mb-3" style="width: 100%;">
+        <div class="row g-0">
+            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                <img src="{{ url_for('static', filename=errandee['profile_picture']) }}" class="img-fluid rounded-circle" alt="Profile Picture"
+                style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ errandee['fullname'] }}({{ errandee['country'] }})</h5>
+                    <p class="card-text">WhatsApp: {{ errandee['whatsappnumber'] }}</p>
+                    <p class="card-text">Phone: {{ errandee['phonenumber'] }}</p>
+                    <p class="card-text">Errands Done: {{ errandee['errands_done'] }}</p>
+                    <div>
+                        {% if errandee['request_status'] == 'accepted' %}
+                        <!-- Button is disabled and text changed if status is accepted -->
+                        <button class="btn btn-secondary" disabled>Already on Errand</button>
+                        {% else %}
+                        <!-- Active button if status is not accepted -->
+                        <a href="/accept_errandee/{{ errandee['errand_id'] }}/{{ errandee['id'] }}" class="btn btn-warning">On Errand</a>
+                        {% endif %}
+                        {% if errandee['request_status'] == 'completed' %}
+                            <!-- Disabled red button for completed errands -->
+                            <button class="btn btn-danger" disabled>Errand Completed</button>
+                        {% else %}
+                            <!-- Active "Done Errand" button if not completed -->
+                            <a href="/done_errand/{{ errandee['errand_id'] }}/{{ errandee['id'] }}" class="btn btn-success">Done Errand</a>
+                        {% endif %}
+                        <!-- New "Errand Not Done" button -->
+                        <a href="/errand_not_done/{{ errandee['errand_id'] }}/{{ errandee['id'] }}" 
+                        class="btn btn-danger">Errand Not Done</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No interested errandees at the moment.</p>
+{% endif %}
+
+{% endblock %}

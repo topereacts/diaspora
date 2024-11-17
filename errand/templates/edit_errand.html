@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Edit Errand
+{% endblock %}
+
+
+{% block main %}
+<div class="container">
+    <h2>Edit Errand</h2>
+    <form action="/edit_errand/{{ errand.id }}" method="POST">
+        <div class="form-group">
+            <label for="description">Errand Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required>{{ errand.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="location">Errand Location</label>
+            <input type="text" class="form-control" id="location" name="location" value="{{ errand.location }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="/errander_dashboard" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
